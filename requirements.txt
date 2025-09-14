@@ -4,3 +4,4 @@ tqdm
 soundfile
 ffmpeg
 datasets
+colorama
