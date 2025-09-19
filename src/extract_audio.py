@@ -3,6 +3,7 @@ import sys
 sys.dont_write_bytecode = True
 
 #Other dependencies
+from . import error_handling #Fixing error
 from datasets import *
 from error_handling import throwError
 from colorama import Fore, Style
