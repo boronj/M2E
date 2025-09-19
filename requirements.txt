@@ -1,7 +1,0 @@
-py-feat
-pandas
-tqdm
-soundfile
-ffmpeg
-datasets
-colorama
