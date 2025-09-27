@@ -14,6 +14,6 @@ setup(
 		"numpy",
 		"nvidia-nccl-cu12==2.27.3"
 	],
-	package_dir = {"":"src"},
+	package_dir = {"m2e":"src"},
 	packages=find_packages(where="src"),
 )
