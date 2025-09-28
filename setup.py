@@ -11,7 +11,7 @@ setup(
 		"ffmpeg",
 		"datasets",
 		"colorama",
-		"numpy>=2.0.0",
+		"numpy==2.0.0",
 		"nvidia-nccl-cu12==2.27.3",
 		"matplotlib==3.10.0",
 		"h5py==3.14.0"
