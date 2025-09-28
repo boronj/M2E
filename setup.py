@@ -2,6 +2,7 @@ from setuptools import setup, find_packages
 setup(
 	name = "m2e",
 	version = "0.0.1",
+	python_requires = ">3.12",
 	author = "Jacob Boron, Logan Garcia, Henry H., Arpandeep Khatua, Ethan Lu",
 	install_requires = [
 		"py-feat",
