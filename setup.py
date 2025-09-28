@@ -11,7 +11,7 @@ setup(
 		"ffmpeg",
 		"datasets",
 		"colorama",
-		"numpy",
+		"numpy==2.0.0",
 		"nvidia-nccl-cu12==2.27.3"
 	],
 	package_dir = {'':'src'},
