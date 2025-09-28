@@ -5,7 +5,7 @@ setup(
 	author = "Jacob Boron, Logan Garcia, Henry H., Arpandeep Khatua, Ethan Lu",
 	install_requires = [
 		"py-feat",
-		"pandas",
+		"pandas==2.3.0",
 		"tqdm",
 		"soundfile",
 		"ffmpeg",
@@ -13,7 +13,7 @@ setup(
 		"colorama",
 		"numpy==2.0.0",
 		"nvidia-nccl-cu12==2.27.3",
-		"matplotlib==2.1.0",
+		"matplotlib==3.10.0",
 		"h5py==3.14.0"
 	],
 	package_dir = {'':'src'},
