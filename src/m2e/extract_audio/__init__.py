@@ -1,14 +1,10 @@
-#Set flag to not clutter /src/ with .pyc stuff
-import sys
-sys.dont_write_bytecode = True
-
 #Other dependencies
 from datasets import *
 from error_handling import throwError
 from colorama import Fore, Style
 import numpy as np
 import soundfile as sf
-import json, argparse, opensmile
+import json, argparse, opensmile, sys 
 
 #Set up audio DBs
 MELD_URL = "https://huggingface.co/datasets/WiktorJakubowski/MELD-splits/resolve/main/data/"
