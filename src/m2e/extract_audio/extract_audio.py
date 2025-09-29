@@ -27,6 +27,9 @@ dataset = {
 	#MEAD?
 }
 
+def get_dataset():
+	return dataset
+
 #Get length of a dataset
 def get_length(set_, split):
 	return len(dataset[set_][split])
