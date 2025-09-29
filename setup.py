@@ -5,7 +5,6 @@ setup(
 	python_requires = ">3.12",
 	author = "Jacob Boron, Logan Garcia, Henry H., Arpandeep Khatua, Ethan Lu",
 	install_requires = [
-		"py-feat",
 		"pandas==2.3.0",
 		"tqdm",
 		"soundfile",
