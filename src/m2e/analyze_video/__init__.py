@@ -1,1 +1,1 @@
-from analyze_video import *
+from .analyze_video import *

@@ -1,3 +1,1 @@
-from .analyze_video import *
-from .error_handling import *
-from .extract_audio import *
+import error_handling, extract_audio
