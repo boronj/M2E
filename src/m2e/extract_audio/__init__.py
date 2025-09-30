@@ -1,6 +1,6 @@
 #Other dependencies
 from datasets import *
-from error_handling import throwError
+from .error_handling import throwError
 from colorama import Fore, Style
 import numpy as np
 import soundfile as sf
