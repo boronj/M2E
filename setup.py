@@ -5,7 +5,7 @@ setup(
 	python_requires=">3",
 	author = "Jacob Boron, Logan Garcia, Henry H., Arpandeep Khatua, Ethan Lu",
 	install_requires = [
-		"pandas==2.3.0",
+		"pandas==2.2.2",
 		"tqdm",
 		"soundfile",
 		"ffmpeg",
