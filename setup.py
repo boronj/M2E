@@ -6,7 +6,7 @@ setup(
 	author = "Jacob Boron, Logan Garcia, Henry H., Arpandeep Khatua, Ethan Lu",
 	install_requires = [
 		"pandas==2.2.2",
-		"opensmile"
+		"opensmile",
 		"tqdm",
 		"soundfile",
 		"ffmpeg",
