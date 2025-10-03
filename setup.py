@@ -15,7 +15,8 @@ setup(
 		"numpy==2.0.0",
 		"nvidia-nccl-cu12==2.27.3",
 		"matplotlib==3.10.0",
-		"h5py==3.14.0"
+		"h5py==3.14.0",
+		"torchcodec"
 	],
 	packages=["m2e", "m2e.extract_audio", "m2e.analyze_video", "m2e.error_handling"],
 	package_dir = {'':'src'},
