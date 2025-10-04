@@ -43,8 +43,6 @@ def extract_audio(set_, split, number, output_file):
 
 	#Extract audio & sampling rate 
 	audio = dataset[set_][split].select(range(number))
-	#print(audio['audio'])
-	#print("\n")
 	sampling_rate = audio['audio'][0]['sampling_rate']
 
 	#Convert float format to PCM int-16 format
@@ -53,8 +51,8 @@ def extract_audio(set_, split, number, output_file):
 	#NP array doesn't have to be put in here as wav2vec will be used
 	#to extract audio
 	audioTuple = (audio['file'][0], set_, )
-	print(audioTuple)
-	if dataset=="CreamaD": return audioTuple + (audio['emotion'][0],)
+
+	if dataset=="CREMA-D": return audioTuple + (audio['emotion'][0],)
 	elif dataset=="MELD": return audioTuple + (audio['major_emotion'][0],)
 
 def main():
