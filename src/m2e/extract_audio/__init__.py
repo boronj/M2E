@@ -35,7 +35,7 @@ def get_length(set_, split):
 def extract_EGM_parameters(audio_path):
 	audio, sampling_rate = sf.read(audio_path)
 
-	GEMAPS_parameters = opensmile.Smile(feature_set = opensmile.FeatureSet.eGeMAPS, feature_level = opensmile.FeatureLevel.Functionals)
+	GEMAPS_parameters = opensmile.Smile(feature_set = opensmile.FeatureSet.eGeMAPSv01a, feature_level = opensmile.FeatureLevel.Functionals)
 	return GEMAPS_parameters.process_signal(audio, sampling_rate)
 
 #Return tuple containing filepath, dataset + emotion
@@ -43,7 +43,7 @@ def extract_audio(set_, split, number, output_file):
 
 	#Extract audio & sampling rate 
 	audio = dataset[set_][split].select(range(number))
-	print(audio['audio'])
+	#print(audio['audio'])
 	#print("\n")
 	sampling_rate = audio['audio'][0]['sampling_rate']
 
@@ -53,8 +53,8 @@ def extract_audio(set_, split, number, output_file):
 	#NP array doesn't have to be put in here as wav2vec will be used
 	#to extract audio
 	audioTuple = (audio['file'][0], set_, )
-
-	if dataset=="CreamaD": return  audioTuple + (audio['emotion'][0],)
+	print(audioTuple)
+	if dataset=="CreamaD": return audioTuple + (audio['emotion'][0],)
 	elif dataset=="MELD": return audioTuple + (audio['major_emotion'][0],)
 
 def main():
