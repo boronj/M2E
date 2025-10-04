@@ -32,14 +32,14 @@ def get_length(set_, split):
 	return len(dataset[set_][split])
 
 #Extract eGeMAPS parameters from an audio file
-def extract_EGM_parameters(audio_path = "data/output.wav"):
+def extract_EGM_parameters(audio_path):
 	audio, sampling_rate = sf.read(audio_path)
 
 	GEMAPS_parameters = opensmile.Smile(feature_set = opensmile.FeatureSet.eGeMAPS, feature_level = opensmile.FeatureLevel.Functionals)
 	return GEMAPS_parameters.process_signal(audio, sampling_rate)
 
 #Return tuple containing filepath, dataset + emotion
-def extract_audio(set_, split, number, output_file = "../data/output.wav"):
+def extract_audio(set_, split, number, output_file):
 
 	#Extract audio & sampling rate 
 	audio = dataset[set_][split].select(range(number))
