@@ -23,6 +23,9 @@ dataset = {
 	#MEAD?
 }
 
+dataset["CREMA-D"].set_format(type="torch", device="cuda")
+dataset["MELD"].set_format(type="torch", device="cuda")
+
 def get_dataset():
 	return dataset
 
