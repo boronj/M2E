@@ -10,7 +10,7 @@ setup(
 		"tqdm",
 		"soundfile",
 		"ffmpeg",
-		"datasets[audio]==4.0.0",
+		"datasets[audio] == 3.6.0",
 		"colorama",
 		"numpy==2.0.0",
 		"matplotlib==3.10.0",
