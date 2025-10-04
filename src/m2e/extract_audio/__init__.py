@@ -10,7 +10,7 @@ import json, argparse, opensmile, sys
 MELD_URL = "https://huggingface.co/datasets/WiktorJakubowski/MELD-splits/resolve/main/data/"
 
 dataset = {
-	"CREMA-D": load_dataset('confit/cremad-parquet', data_files={\
+	"CREMA-D": load_dataset('confit/cremad-parquet', data_files={
 		"test":"data/test-00000-of-00001.parquet",
 		"train":"data/train-00000-of-00001.parquet",
 		"validation":"data/validation-00000-of-00001.parquet"
