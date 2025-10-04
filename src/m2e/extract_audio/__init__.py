@@ -52,8 +52,8 @@ def extract_audio(set_, split, number, output_file):
 	#to extract audio
 	audioTuple = (audio['file'][0], set_, )
 
-	if dataset=="CREMA-D": return audioTuple + (audio['emotion'][0],)
-	elif dataset=="MELD": return audioTuple + (audio['major_emotion'][0],)
+	if set_=="CREMA-D": return audioTuple + (audio['emotion'][0],)
+	elif set_=="MELD": return audioTuple + (audio['major_emotion'][0],)
 
 def main():
 	#Set up argument parser using argparse
