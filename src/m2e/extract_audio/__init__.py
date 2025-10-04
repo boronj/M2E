@@ -48,7 +48,7 @@ def extract_audio(set_, split, number, output_file):
 	sampling_rate = audio['audio'][0]['sampling_rate']
 
 	#Convert float format to PCM int-16 format
-	sf.write("../data/output.wav", audio['audio'][0]['array'], sampling_rate, subtype="PCM_16")
+	sf.write(output_file, audio['audio'][0]['array'], sampling_rate, subtype="PCM_16")
 	#Return information abt filepath, audio information + emotion
 	#NP array doesn't have to be put in here as wav2vec will be used
 	#to extract audio
