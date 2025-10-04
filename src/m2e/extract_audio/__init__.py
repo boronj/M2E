@@ -42,7 +42,7 @@ def extract_audio(set_, split, number, output_file = "../data/output.wav"):
 
 	#Extract audio & sampling rate 
 	audio = dataset[set_][split].select(range(number))
-	#print(audio['audio'])
+	print(audio['audio'])
 	#print("\n")
 	sampling_rate = audio['audio'][0]['sampling_rate']
 
