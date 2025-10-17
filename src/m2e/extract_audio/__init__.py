@@ -33,7 +33,7 @@ def get_length(set_, split):
 def extract_EGM_parameters(audio_path):
 	audio, sampling_rate = sf.read(audio_path)
 
-	GEMAPS_parameters = opensmile.Smile(feature_set = opensmile.FeatureSet.eGeMAPSv01a, feature_level = opensmile.FeatureLevel.Functionals)
+	GEMAPS_parameters = opensmile.Smile(feature_set = opensmile.FeatureSet.eGeMAPSv02, feature_level = opensmile.FeatureLevel.Functionals)
 	return GEMAPS_parameters.process_signal(audio, sampling_rate)
 
 #Return tuple containing filepath, dataset + emotion
