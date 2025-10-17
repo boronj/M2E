@@ -7,15 +7,13 @@ import soundfile as sf
 import json, argparse, opensmile, sys 
 
 #Set up audio DBs
-MELD_URL = "https://huggingface.co/datasets/WiktorJakubowski/MELD-splits/resolve/main/data/"
-
 dataset = {
 	"CREMA-D": load_dataset('confit/cremad-parquet', data_files={
 		"test":"data/test-00000-of-00001.parquet",
 		"train":"data/train-00000-of-00001.parquet",
 		"validation":"data/validation-00000-of-00001.parquet"
 		}).cast_column("audio", Audio()),
-	"MELD": load_dataset('parquet', data_files={
+	"MELD": load_dataset('WiktorJakubowski/MELD-splits', data_files={
 		"test": "data/test-00000-of-00001.parquet",
 		"train": "data/train-00000-of-00002.parquet",
 		"validation": "data/validation-00000-of-00001.parquet"
