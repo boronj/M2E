@@ -16,9 +16,9 @@ dataset = {
 		"validation":"data/validation-00000-of-00001.parquet"
 		}).cast_column("audio", Audio()),
 	"MELD": load_dataset('parquet', data_files={
-		"test": [MELD_URL + x for x in [
-			"test-00000-of-00006.parquet"
-		]]
+		"test": "data/test-00000-of-00001.parquet",
+		"train": "data/train-00000-of-00002.parquet",
+		"validation": "data/validation-00000-of-00001.parquet"
 		}).cast_column("audio", Audio())
 	#MEAD?
 }
