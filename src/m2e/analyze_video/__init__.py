@@ -1,14 +1,20 @@
 import argparse
-out[f"{col}__rate"] = float(per_frame_df[col].mean(skipna=True))
+from pathlib import Path
+from feat import *
+from tqdm import tqdm
 
 
-# Emotions: mean probability across frames + top emotion
-if emo_cols:
-	emo_means = per_frame_df[emo_cols].mean(skipna=True)
-	out.update({f"emo_{c}__mean": float(emo_means[c]) for c in emo_cols})
-	top = emo_means.idxmax()
-	out["top_emotion"] = top
-	out["top_emotion_mean_prob"] = float(emo_means[top])
+
+def summarize_video(per_frame_df, col):
+	out = {}
+	out[f"{col}__rate"] = float(per_frame_df[col].mean(skipna=True))
+	# Emotions: mean probability across frames + top emotion
+	if emo_cols:
+		emo_means = per_frame_df[emo_cols].mean(skipna=True)
+		out.update({f"emo_{c}__mean": float(emo_means[c]) for c in emo_cols})
+		top = emo_means.idxmax()
+		out["top_emotion"] = top
+		out["top_emotion_mean_prob"] = float(emo_means[top])
 	return pd.Series(out)
 
 
