@@ -6,7 +6,7 @@ import pandas as pd
 def find_videos(path: Path):
 	return [
     	item for item in path.rglob('*')
-    	if item.is_file() and item.suffix.lower() in {{'.mp4', '.avi', '.mov'}}
+    	if item.is_file() and item.suffix.lower() in {'.mp4', '.avi', '.mov'}
 	]
 
 def summarize_video(per_frame_df, col):
@@ -67,6 +67,7 @@ def main():
 				continue
 
 			df = pd.DataFrame(fex)
+			
 			df.to_csv(per_frame_csv, index=False)
 
 
