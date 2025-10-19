@@ -1,9 +1,13 @@
 import argparse
 from pathlib import Path
-from feat import *
+import feat
 from tqdm import tqdm
 
-
+def find_videos(path: Path):
+	return [
+    	item for item in path.rglob('*')
+    	if item.is_file() and item.suffix.lower() in {{'.mp4', '.avi', '.mov'}}
+	]
 
 def summarize_video(per_frame_df, col):
 	out = {}
@@ -36,7 +40,7 @@ def main():
 
 
 	# Initialize detector once
-	detector = Detector()
+	detector = feat.Detector()
 
 
 	summaries = []
