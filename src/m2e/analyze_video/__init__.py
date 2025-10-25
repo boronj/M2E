@@ -9,16 +9,22 @@ def find_videos(path: Path):
     	if item.is_file() and item.suffix.lower() in {'.mp4', '.avi', '.mov'}
 	]
 
-def summarize_video(per_frame_df, col):
+def summarize_video(per_frame_df):
+	'''
+	Returns probabilities of emotions + the top emotion.
+	per_frame_def: pd.DataFrame (has probabilities for top emotions)
+	col: 
+	'''
+	emo_cols = ['anger', 'disgust', 'fear', 'happiness', 'sadness', 'surprise', 'neutral']
 	out = {}
-	out[f"{col}__rate"] = float(per_frame_df[col].mean(skipna=True))
+	for col in emo_cols:
+		out[f"{col}__rate"] = float(per_frame_df[col].mean(skipna=True))
 	# Emotions: mean probability across frames + top emotion
-	if emo_cols:
-		emo_means = per_frame_df[emo_cols].mean(skipna=True)
-		out.update({f"emo_{c}__mean": float(emo_means[c]) for c in emo_cols})
-		top = emo_means.idxmax()
-		out["top_emotion"] = top
-		out["top_emotion_mean_prob"] = float(emo_means[top])
+	emo_means = per_frame_df[emo_cols].mean(skipna=True)
+	out.update({f"emo_{c}__mean": float(emo_means[c]) for c in emo_cols})
+	top = emo_means.idxmax()
+	out["top_emotion"] = top
+	out["top_emotion_mean_prob"] = float(emo_means[top])
 	return pd.Series(out)
 
 
@@ -71,7 +77,7 @@ def main():
 			df.to_csv(per_frame_csv, index=False)
 
 
-			summary_row = summarize_video(df, vid.name)
+			summary_row = summarize_video(df)
 			summaries.append(summary_row)
 
 
