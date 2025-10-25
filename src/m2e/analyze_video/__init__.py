@@ -13,7 +13,6 @@ def summarize_video(per_frame_df):
 	'''
 	Returns probabilities of emotions + the top emotion.
 	per_frame_def: pd.DataFrame (has probabilities for top emotions)
-	col: 
 	'''
 	emo_cols = ['anger', 'disgust', 'fear', 'happiness', 'sadness', 'surprise', 'neutral']
 	out = {}
