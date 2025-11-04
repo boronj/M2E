@@ -17,10 +17,10 @@ def summarize_video(per_frame_df):
 	emo_cols = ['anger', 'disgust', 'fear', 'happiness', 'sadness', 'surprise', 'neutral']
 	out = {}
 	for col in emo_cols:
-		out[f"{col}__rate"] = float(per_frame_df[col].mean(skipna=True))
+		out[f"{col}__rate"] = float(per_frame_df.emotions[col].mean(skipna=True))
 	# Emotions: mean probability across frames + top emotion
-	emo_means = per_frame_df[emo_cols].mean(skipna=True)
-	out.update({f"emo_{c}__mean": float(emo_means[c]) for c in emo_cols})
+	emo_means = per_frame_df.emotions[emo_cols].mean(skipna=True)
+	out.update({f"emo_{c}__mean": float(emo_means.emotions[c]) for c in emo_cols})
 	top = emo_means.idxmax()
 	out["top_emotion"] = top
 	out["top_emotion_mean_prob"] = float(emo_means[top])
