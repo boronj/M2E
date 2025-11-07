@@ -9,7 +9,7 @@ setup(
 		"opensmile",
 		"tqdm",
 		"soundfile",
-		"ffmpeg",
+		"ffmpeg-python",
 		"datasets[audio] == 3.6.0",
 		"colorama"
 	],
