@@ -14,16 +14,14 @@ def summarize_video(per_frame_df):
 	Returns probabilities of emotions + the top emotion.
 	per_frame_def: pd.DataFrame (has probabilities for top emotions)
 	'''
+	out = {"video": list(set(per_frame_df['input']))[0]}
 	emo_cols = ['anger', 'disgust', 'fear', 'happiness', 'sadness', 'surprise', 'neutral']
-	out = {}
-	for col in emo_cols:
-		out[f"{col}__rate"] = float(per_frame_df.emotions[col].mean(skipna=True))
-	# Emotions: mean probability across frames + top emotion
-	emo_means = per_frame_df.emotions[emo_cols].mean(skipna=True)
-	out.update({f"emo_{c}__mean": float(emo_means[c]) for c in emo_cols})
-	top = emo_means.idxmax()
-	out["top_emotion"] = top
-	out["top_emotion_mean_prob"] = float(emo_means[top])
+	if set(emo_cols).issubset(per_frame_df.columns):
+		emo_means = per_frame_df[emo_cols].mean(skipna=True)
+		out.update({f"emo_{c}_mean": float(emo_means[c]) for c in emo_cols})
+		top = emo_means.idxmax()
+		out["top_emotion"] = top
+		out["top_emotion_mean_prob"] = float(emo_means[top])
 	return pd.Series(out)
 
 
@@ -80,9 +78,9 @@ def main():
 			summaries.append(summary_row)
 
 
-			out_summary = out_root / "summaries.csv"
-			summary_df = pd.DataFrame(summaries)
-			summary_df.sort_values("video").to_csv(out_summary, index=False)
+	out_summary = out_root / "summaries.csv"
+	summary_df = pd.DataFrame(summaries)
+	summary_df.sort_values("video").to_csv(out_summary, index=False)
 
 
 	print(f"\nDone.\nPer-frame CSVs: {per_frame_dir.resolve()}\nSummary table: {out_summary.resolve()}")
