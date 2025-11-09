@@ -40,7 +40,7 @@ def extract_EGM_parameters(audio_path):
 def extract_audio(set_, split, number, output_file):
 
 	#Extract audio & sampling rate 
-	audio = dataset[set_][split].select(range(number))
+	audio = dataset[set_][split][number]
 	sampling_rate = audio['audio'][0]['sampling_rate']
 
 	#Convert float format to PCM int-16 format
@@ -48,7 +48,7 @@ def extract_audio(set_, split, number, output_file):
 	#Return information abt filepath, audio information + emotion
 	#NP array doesn't have to be put in here as wav2vec will be used
 	#to extract audio
-	audioTuple = (audio['file'][0], set_, )
+	audioTuple = (audio['file'], set_, )
 
 	if set_=="CREMA-D": return audioTuple + (audio['emotion'][0],)
 	elif set_=="MELD": return audioTuple + (audio['major_emotion'][0],)
