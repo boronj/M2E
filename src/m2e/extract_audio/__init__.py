@@ -38,17 +38,17 @@ def extract_EGM_parameters(audio_path):
 
 #Return tuple containing filepath, dataset + emotion
 def extract_audio(audio, output_file, set_):
-	sampling_rate = audio['audio'][0]['sampling_rate']
+	sampling_rate = audio['audio']['sampling_rate']
 
 	#Convert float format to PCM int-16 format
-	sf.write(output_file, audio['audio'][0]['array'], sampling_rate, subtype="PCM_16")
+	sf.write(output_file, audio['audio']['array'], sampling_rate, subtype="PCM_16")
 	#Return information abt filepath, audio information + emotion
 	#NP array doesn't have to be put in here as wav2vec will be used
 	#to extract audio
 	audioTuple = (audio['file'], set_, )
 
-	if set_=="CREMA-D": return audioTuple + (audio['emotion'][0],)
-	elif set_=="MELD": return audioTuple + (audio['major_emotion'][0],)
+	if set_=="CREMA-D": return audioTuple + (audio['emotion'],)
+	elif set_=="MELD": return audioTuple + (audio['major_emotion'],)
 
 def main():
 	#Set up argument parser using argparse
