@@ -37,10 +37,7 @@ def extract_EGM_parameters(audio_path):
 	return GEMAPS_parameters.process_signal(audio, sampling_rate)
 
 #Return tuple containing filepath, dataset + emotion
-def extract_audio(set_, split, number, output_file):
-
-	#Extract audio & sampling rate 
-	audio = dataset[set_][split][number]
+def extract_audio(audio, output_file, set_):
 	sampling_rate = audio['audio'][0]['sampling_rate']
 
 	#Convert float format to PCM int-16 format
@@ -48,7 +45,7 @@ def extract_audio(set_, split, number, output_file):
 	#Return information abt filepath, audio information + emotion
 	#NP array doesn't have to be put in here as wav2vec will be used
 	#to extract audio
-	audioTuple = (audio['file'], set_, )
+	audioTuple = (audio['file'], kwargs.get("set_"), )
 
 	if set_=="CREMA-D": return audioTuple + (audio['emotion'][0],)
 	elif set_=="MELD": return audioTuple + (audio['major_emotion'][0],)
@@ -59,14 +56,15 @@ def main():
 	parser.add_argument("--db", type=str)
 	parser.add_argument("--split", type=str)
 	parser.add_argument("--number", type=int)
-	parser.add_argument("--output_path", type=str, default="../data/output.wav")
+	parser.add_argument("--output_path", type=str, default="/data/output.wav")
 	args = parser.parse_args()
 	print(args)
 
 
 	#Write & extract audio given CL args
 	try:
-		audioInfo = extract_audio(args.db, args.split.lower(), args.number, args.output_path)
+		a = dataset[args.db][args.split.lower()][args.number]
+		audioInfo = extract_audio(a, args.output_path, args.db)
 	except Exception as e:
 		throw_error(e, f"failed to write {args.db}[`{args.split.lower()}`], #{args.number} to {Fore.YELLOW}{args.output_path}{Style.RESET_ALL}")
 	else:
