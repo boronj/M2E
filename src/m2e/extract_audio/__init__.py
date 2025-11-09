@@ -45,7 +45,7 @@ def extract_audio(audio, output_file, set_):
 	#Return information abt filepath, audio information + emotion
 	#NP array doesn't have to be put in here as wav2vec will be used
 	#to extract audio
-	audioTuple = (audio['file'], kwargs.get("set_"), )
+	audioTuple = (audio['file'], set_, )
 
 	if set_=="CREMA-D": return audioTuple + (audio['emotion'][0],)
 	elif set_=="MELD": return audioTuple + (audio['major_emotion'][0],)
