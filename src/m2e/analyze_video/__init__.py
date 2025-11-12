@@ -64,7 +64,7 @@ def main():
 			df = pd.read_csv(per_frame_csv)
 		else:
 			try:
-				fex = detector.detect_video(str(vid))
+				fex = detector.detect_video(str(vid), skip_frames = 10)
 			except Exception as e:
 				print(f"[WARN] Skipping {vid.name}: {e}", file=sys.stderr)
 				continue
