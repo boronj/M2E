@@ -3,17 +3,12 @@ from colorama import Fore, Style #Color styles for error messaging
 from google.colab import auth#, drive #Mounting for Google Drive
 from google.auth import default
 import pandas as pd
-DIRECTORY = "/content/drive/"
+DIRECTORY = "/content"
 MODEL = "MeshTalk"
 DATASET = "CREMA-D"
 SPLIT = "test"
 PATH = os.path.join(DIRECTORY, f"\'My Drive\'/output_spreadsheets/{MODEL}", f"{DATASET}_{SPLIT}_metadata.gsheet")
 print(PATH)
-
-#Authenticate Google account & set up GSpread client
-auth.authenticate_user()
-credentials, _ = default()
-gc = gspread.authorize(credentials)
 
 ###These depend on the analysis section being done###
 
@@ -42,8 +37,8 @@ def writeCSVData(file_path, JSON_data):
     writer = csv.writer(file)
     writer.writerow([result[x] for x in JSON_data.keys()])
 
-if "/content/M2E/src" not in sys.path:
-  sys.path.append("/content/M2E/src/") #Include this b/c the "editable project" points to this location
+if f"{directory}/M2E/src" not in sys.path:
+  sys.path.append(f"{directory}/M2E/src/") #Include this b/c the "editable project" points to this location
 from m2e import *
 crema_d = dataset['CREMA-D']
 
@@ -54,9 +49,9 @@ print(crema_d)
 snippets = crema_d[SPLIT].select(range(0,5)) #First 5 entries in CREMA-D dataset
 print(snippets)
 
-os.environ['CUDA_HOME'] = '/usr/local/cuda-12.4'
-os.environ['PATH'] = '/usr/local/cuda-12.4/bin:' + os.environ['PATH']
-os.environ['LD_LIBRARY_PATH'] = '/usr/local/cuda-12.4/lib64:' + os.environ['LD_LIBRARY_PATH']
+#os.environ['CUDA_HOME'] = '/usr/local/cuda-12.4'
+#os.environ['PATH'] = '/usr/local/cuda-12.4/bin:' + os.environ['PATH']
+#os.environ['LD_LIBRARY_PATH'] = '/usr/local/cuda-12.4/lib64:' + os.environ['LD_LIBRARY_PATH']
 
 EGM_total = []
 consensus_emotions = []
