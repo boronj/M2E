@@ -10,12 +10,12 @@ sudo apt install ffmpeg
 python -m pip install ffmpeg-python
 
 #Setting up venv in M2E folder
-!sudo apt install python3.12-venv
-!pip install --upgrade virtualenv
-!python3 -m venv M2E
-!python3 -m venv M2E
-!source /M2E/bin/activate
+sudo apt install python3.12-venv
+pip install --upgrade virtualenv
+python3 -m venv M2E
+python3 -m venv M2E
+source /M2E/bin/activate
 
 #Install M2E + dependencies
-!python -m pip install -e /M2E/ --use-pep517
-!pip show m2e #This should show the package, otherwise look back and figure out wtf went wrong
+python -m pip install -e /M2E/ --use-pep517
+pip show m2e #This should show the package, otherwise look back and figure out wtf went wrong
