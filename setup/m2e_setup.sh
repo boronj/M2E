@@ -17,8 +17,8 @@ sudo apt install python3.12-venv
 pip install --upgrade virtualenv
 python3 -m venv M2E
 python3 -m venv M2E
-source "$1/M2E/bin/activate"
+source "$DIRECTORY/M2E/bin/activate"
 
 #Install M2E + dependencies
-python -m pip install -e "$1/M2E/" --use-pep517
+python -m pip install -e "$DIRECTORY/M2E/" --use-pep517
 pip show m2e #This should show the package, otherwise look back and figure out wtf went wrong
