@@ -11,11 +11,9 @@ NUMBER = 5
 EGM_total = []
 consensus_emotions = []
 
-#Initialize M2E
-def M2E_init():
-  if f"{ROOT_DIRECTORY}/M2E/src" not in sys.path:
-    sys.path.append(f"{ROOT_DIRECTORY}/M2E/src/") #Include this b/c the "editable project" points to this location
-  from m2e import *
+output_gemaps_path = ""
+output_path = ""
+output_video_path = ""
 
 #Create folders for generated videos
 def createFolders():
@@ -55,8 +53,12 @@ def write_audio(audioObj):
   print(f"Wrote {Fore.YELLOW}{metadata[0]}{Style.RESET_ALL} to {Fore.YELLOW}{output_path}/{audioObj['audio']['path']}{Style.RESET_ALL}")
 
 
-M2E_init()
+if f"{ROOT_DIRECTORY}/M2E/src" not in sys.path:
+  sys.path.append(f"{ROOT_DIRECTORY}/M2E/src/") #Include this b/c the "editable project" points to this location
+from m2e import *
+
 setEnvVariables()
+createFolders()
 selectSnippetRange(NUMBER)
 
 for x in section:
