@@ -4,7 +4,6 @@
 wget https://developer.download.nvidia.com/compute/cuda/12.4.0/local_installers/cuda_12.4.0_550.54.14_linux.run
 chmod +x cuda_12.4.0_550.54.14_linux.run
 sudo sh cuda_12.4.0_550.54.14_linux.run --silent --toolkit
-import os
 nvcc --version #Keep in here for now
 
 #Building ninja (used to install pytorch3d>=1.5)
@@ -25,6 +24,6 @@ echo "A" | sudo wget https://github.com/facebookresearch/meshtalk/releases/downl
 unzip /content/PTM.zip -d /content/meshtalk_models
 export PYTHONPATH=/content/
   #Uninstall & reinstall ffmpeg for good measure
-!python -m pip uninstall ffmpeg-python -y
-!python -m pip uninstall ffmpeg -y
-!python -m pip install ffmpeg-python
+python -m pip uninstall ffmpeg-python -y
+python -m pip uninstall ffmpeg -y
+python -m pip install ffmpeg-python
