@@ -1,9 +1,7 @@
-import os, csv, json, subprocess, sys, gspread, ffmpeg
+import os, csv, json, subprocess, sys, ffmpeg
 from colorama import Fore, Style #Color styles for error messaging
-from google.colab import auth#, drive #Mounting for Google Drive
-from google.auth import default
 import pandas as pd
-ROOT_DIRECTORY = "/content"
+ROOT_DIRECTORY = "/home/ubuntu"
 MODEL = "MeshTalk"
 DATASET = "CREMA-D"
 SPLIT = "test"
@@ -17,12 +15,12 @@ output_video_path = ""
 
 #Create folders for generated videos
 def createFolders():
-  global outputs_gemaps_path
+  global output_gemaps_path
   global output_path
   global output_video_path
-  output_gemaps_path = f"{ROOT_DIRECTORY}/GEMAPS_tables/{MODEL}/{DATASET}_{SPLIT}"
-  output_path = f"{ROOT_DIRECTORY}/data/{MODEL}/{DATASET}_{SPLIT}".replace("-", "_")
-  output_video_path = f"{ROOT_DIRECTORY}/data/outputs/{MODEL}/{DATASET}_{SPLIT}/".replace("-", "_")
+  output_gemaps_path = f"{ROOT_DIRECTORY}/GEMAPS_tables/{MODEL}_{DATASET}_{SPLIT}"
+  output_path = f"{ROOT_DIRECTORY}/data/{MODEL}_{DATASET}_{SPLIT}".replace("-", "_")
+  output_video_path = f"{ROOT_DIRECTORY}/data/outputs/{MODEL}_{DATASET}_{SPLIT}/".replace("-", "_")
   os.makedirs(output_gemaps_path, exist_ok=True)
   os.makedirs(output_path, exist_ok=True)
   os.makedirs(output_video_path, exist_ok=True)
@@ -61,19 +59,22 @@ setEnvVariables()
 createFolders()
 selectSnippetRange(NUMBER)
 
+print(output_gemaps_path)
+
+
 for x in section:
   #Write audio to an output path
   write_audio(x)
 
   #Map eGEMAPS features for given audio
   EGM_features = extract_EGM_parameters(f"{output_path}/{x['audio']['path']}")
-  EGM_features.to_csv(f"{output_gemaps_path}/{x['audio']['path'].replace(".wav","_1.csv")}", index=False)
+  EGM_features.to_csv(f"{output_gemaps_path}/{x['audio']['path'].replace('.wav','_1.csv')}", index=False)
   EGM_total.append(EGM_features)
 
   #Call MeshTalk model
   try:
-    path_ = f"{output_video_path}{x['audio']['path'].replace(".wav",".mp4")}"
-    k = subprocess.run([sys.executable, "/content/meshtalk/animate_face.py", "--model_dir", "/content/meshtalk_models/pretrained_models/", "--audio_file", f"{output_path}/{x['audio']['path']}", "--face_template", "/content/meshtalk/assets/face_template.obj", "--output", f"{path_}"], capture_output=True, text=True)
+    path_ = f"{output_video_path}{x['audio']['path'].replace('.wav','.mp4')}"
+    k = subprocess.run([sys.executable, f"{ROOT_DIRECTORY}/meshtalk/animate_face.py", "--model_dir", f"{ROOT_DIRECTORY}/meshtalk_models/pretrained_models/", "--audio_file", f"{output_path}/{x['audio']['path']}", "--face_template", f"{ROOT_DIRECTORY}/meshtalk/assets/face_template.obj", "--output", f"{path_}"], capture_output=True, text=True)
   except Exception as e:
     raise e
   else:
@@ -85,7 +86,7 @@ for x in section:
       print(k.stderr)
     else:
       #Re-encode outputted video using ffmpeg
-      new_path = f"{output_video_path}{x['audio']['path'].replace(".wav","_1.mp4")}"
+      new_path = f"{output_video_path}{x['audio']['path'].replace('.wav','_1.mp4')}"
       ffmpeg.input(path_).output(new_path).run(overwrite_output=True)
       os.remove(path_)
       print(k.returncode)
