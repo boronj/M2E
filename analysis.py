@@ -1,9 +1,24 @@
 import glob, argparse, os
 import pandas as pd
+from colorama import Fore, Style
+from m2e.error_handling import throw_error
 
 #Take GEMAPS table for each file and add it to its respective AU summaries row 
-def combineTables(gemaps_directory):
-  pass
+def combineTables(gemaps_directory, au_tables_path):
+  try:
+    au_dataset = pd.read_csv(au_tables_path)
+  except Exception as e:
+    throw_error("dataset failed to load", e)
+  else:
+    for i in df.index:
+      #Check in gemaps_directory for an equivalent file
+
+      #If it is in au_dataset, access the values from that file
+
+      #Load them one-by-one into au_dataset
+
+    #Return the new AU dataset, and also export it into a new thing
+    #Include checks to make sure # of videos in === # of videos out
 
 #Run regression(?) analysis
 def PLSRegression():
@@ -23,7 +38,7 @@ def main():
   if len(gemaps_tables) == 0:
     raise RuntimeError(f"no GEMAPS tables found in directory '{args.gemaps_tables}'")
   if os.path.exists(f"{args.au_tables}/summaries.csv"):
-    combineTables(gemaps_tables)
+    combineTables(gemaps_tables, f"{args.au_tables}/summaries.csv")
   else:
     raise RuntimeError(f"AU summary table doesn't exist at '{args.au_tables}/summaries.csv'")
 
