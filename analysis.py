@@ -5,7 +5,7 @@ from colorama import Fore, Style
 from m2e.error_handling import throw_error
 
 #Take GEMAPS table for each file and add it to its respective AU summaries row 
-def combineTables(gemaps_directory, au_tables_path):
+def combineTables(gemaps_directory, au_tables_path, output_path):
   try:
     au_dataset = pd.read_csv(au_tables_path)
   except Exception as e:
@@ -30,6 +30,8 @@ def combineTables(gemaps_directory, au_tables_path):
           au_dataset.at[i, column] = gemaps_dataset[0][column]
 
     #Return the new AU dataset, and also export it into a new thing
+    au_dataset.to_csv(output_path, index = False)
+    return au_dataset
 
 #Run regression(?) analysis
 def PLSRegression():
