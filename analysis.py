@@ -6,7 +6,7 @@ from colorama import Fore, Style
 from m2e.error_handling import throw_error
 from sklearn.cross_decomposition import PLSRegression
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error, r2_score
 
 #Take GEMAPS table for each file and add it to its respective AU summaries row 
 def combine_tables(gemaps_directory, gemaps_tables_path, au_tables_path, output_path):
@@ -40,7 +40,7 @@ def combine_tables(gemaps_directory, gemaps_tables_path, au_tables_path, output_
     au_dataset.to_csv(output_path, index = False)
     return au_dataset
 
-#Run regression(?) analysis
+#Run PLS regression model + analysis
 def pls_regression(x_axis, y_axis):
   x_train, x_test, y_train, y_test = train_test_split(x_axis, y_axis, test_size = 0.2, random_state = 42)
   pls_model = PLSRegression(n_components=2, scale=True)
@@ -48,7 +48,7 @@ def pls_regression(x_axis, y_axis):
   y_predicted = pls_model.predict(x_test)
   mse = mean_squared_error(y_test, y_pred)
   coefficients = pls_model.coef_
-  r2 = r2_score = (y_test, y_pred)
+  r2 = r2_score(y_test, y_pred)
 
 
 #main() sets up directory to point to
