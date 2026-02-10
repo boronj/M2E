@@ -1,11 +1,15 @@
 import glob, argparse, os
 import pandas as pd
+import numpy as np
 from tqdm import tqdm
 from colorama import Fore, Style
 from m2e.error_handling import throw_error
+from sklearn.cross_decomposition import PLSRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
 
 #Take GEMAPS table for each file and add it to its respective AU summaries row 
-def combineTables(gemaps_directory, gemaps_tables_path, au_tables_path, output_path):
+def combine_tables(gemaps_directory, gemaps_tables_path, au_tables_path, output_path):
   try:
     au_dataset = pd.read_csv(au_tables_path)
   except Exception as e:
@@ -37,8 +41,14 @@ def combineTables(gemaps_directory, gemaps_tables_path, au_tables_path, output_p
     return au_dataset
 
 #Run regression(?) analysis
-def PLSRegression():
-  pass
+def pls_regression(x_axis, y_axis):
+  x_train, x_test, y_train, y_test = train_test_split(x_axis, y_axis, test_size = 0.2, random_state = 42)
+  pls_model = PLSRegression(n_components=2, scale=True)
+  pls_model.fit(x_train, y_train)
+  y_predicted = pls_model.predict(x_test)
+  mse = mean_squared_error(y_test, y_pred)
+  coefficients = pls_model.coef_
+  r2 = r2_score = (y_test, y_pred)
 
 
 #main() sets up directory to point to
@@ -54,12 +64,12 @@ def main():
   if len(gemaps_tables) == 0:
     raise RuntimeError(f"no GEMAPS tables found in directory '{args.gemaps_tables}'")
   if os.path.exists(f"{args.au_tables}/summaries.csv"):
-    combineTables(gemaps_tables, args.gemaps_tables, f"{args.au_tables}/summaries.csv", args.output_path)
+    combine_tables(gemaps_tables, args.gemaps_tables, f"{args.au_tables}/summaries.csv", args.output_path)
   else:
     raise RuntimeError(f"AU summary table doesn't exist at '{args.au_tables}/summaries.csv'")
 
   #Run PLS regression on a specifed column/acoustic cue
-  PLSRegression()
+  pls_regression()
   
 
 if __name__ == "__main__":
