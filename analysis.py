@@ -43,7 +43,7 @@ def main():
   parser = argparse.ArgumentParser(description="Analyzing CSV data.")
   parser.add_argument("--au_tables", type=str, description="Directory path linking to Action Unit tables.")
   parser.add_argument("--gemaps_tables", type=str, description="Directory path linking to GEMAPS tables.")
-  parser.add_argument("--output_path", type=str, description="Directory path to output combined AU/GEMAPS tables to.")
+  parser.add_argument("--output_path", type=str, description="Absolute path to output combined AU/GEMAPS tables to.")
   args = parser.parse_args()
 
   #Find all existing GEMAPS tables, combine them into AU summaries table
