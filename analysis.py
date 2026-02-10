@@ -5,7 +5,7 @@ from colorama import Fore, Style
 from m2e.error_handling import throw_error
 
 #Take GEMAPS table for each file and add it to its respective AU summaries row 
-def combineTables(gemaps_directory, au_tables_path, output_path):
+def combineTables(gemaps_directory, gemaps_tables_path, au_tables_path, output_path):
   try:
     au_dataset = pd.read_csv(au_tables_path)
   except Exception as e:
@@ -16,18 +16,21 @@ def combineTables(gemaps_directory, au_tables_path, output_path):
     for column in tqdm(gemaps_column_names, desc = "Adding GEMAPS columns: ", total = len(gemaps_column_names)):
       au_dataset[column] = [0]*len(au_dataset)
 
+    print(gemaps_directory)
+      
     #Merge values into au_dataset 
     for i in tqdm(au_dataset.index, desc = "Combining datasets: ", total = len(au_dataset.index)):
       #Check in gemaps_directory for an equivalent file
-      video_file = str(au_dataset.at[i, "video"]) #.../.../.../xxx.csv
-      
-      if video_file.replace(".csv",".mp4") in gemaps_directory:
+      video_file = str(au_dataset.at[i, "video"]).split("/") #.../.../.../xxx.mp4
+      video_file = video_file[len(video_file)-1].replace(".mp4", ".csv")
+      video_path = gemaps_tables_path+"/"+video_file
+      if video_path in gemaps_directory:
         #If it is in au_dataset, access the values from that file
-        gemaps_dataset = pd.read_csv(video_file)
+        gemaps_dataset = pd.read_csv(video_path)
         assert len(list(gemaps_dataset.columns)) == len(gemaps_column_names), "Amount of columns in GEMAPS dataset doesn't align" #Idk if this will actually go through or not and I don't want to check manually
         #Load them one-by-one into au_dataset
         for column in tqdm(list(gemaps_dataset.columns), desc = "Combining columns: ", total = len(list(gemaps_dataset.columns))):
-          au_dataset.at[i, column] = gemaps_dataset[0][column]
+          au_dataset.at[i, column] = gemaps_dataset[column][0]
 
     #Return the new AU dataset, and also export it into a new thing
     au_dataset.to_csv(output_path, index = False)
@@ -41,9 +44,9 @@ def PLSRegression():
 #main() sets up directory to point to
 def main():
   parser = argparse.ArgumentParser(description="Analyzing CSV data.")
-  parser.add_argument("--au_tables", type=str, description="Directory path linking to Action Unit tables.")
-  parser.add_argument("--gemaps_tables", type=str, description="Directory path linking to GEMAPS tables.")
-  parser.add_argument("--output_path", type=str, description="Absolute path to output combined AU/GEMAPS tables to.")
+  parser.add_argument("--au_tables", type=str, help="Directory path linking to Action Unit tables.")
+  parser.add_argument("--gemaps_tables", type=str, help="Directory path linking to GEMAPS tables.")
+  parser.add_argument("--output_path", type=str, help="Absolute path to output combined AU/GEMAPS tables to.")
   args = parser.parse_args()
 
   #Find all existing GEMAPS tables, combine them into AU summaries table
@@ -51,7 +54,7 @@ def main():
   if len(gemaps_tables) == 0:
     raise RuntimeError(f"no GEMAPS tables found in directory '{args.gemaps_tables}'")
   if os.path.exists(f"{args.au_tables}/summaries.csv"):
-    combineTables(gemaps_tables, f"{args.au_tables}/summaries.csv")
+    combineTables(gemaps_tables, args.gemaps_tables, f"{args.au_tables}/summaries.csv", args.output_path)
   else:
     raise RuntimeError(f"AU summary table doesn't exist at '{args.au_tables}/summaries.csv'")
 
