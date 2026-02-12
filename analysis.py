@@ -1,4 +1,4 @@
-import glob, argparse, os
+import glob, argparse, os, pprint
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
@@ -7,6 +7,8 @@ from m2e.error_handling import throw_error
 from sklearn.cross_decomposition import PLSRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
+
+MEASURED_METRIC = "loudness_sma3_amean"
 
 #Take GEMAPS table for each file and add it to its respective AU summaries row 
 def combine_tables(gemaps_directory, gemaps_tables_path, au_tables_path, output_path):
@@ -41,15 +43,21 @@ def combine_tables(gemaps_directory, gemaps_tables_path, au_tables_path, output_
     return au_dataset
 
 #Run PLS regression model + analysis
+
+#TO_DO: Check through dataframe (n_components is apparently set to a max 1 row, this shouldn't be the case so smth's off)
+        #Figure out if *all* AU data instead of means should be put in (this isn't that hard of a change but does require another 2.5 hours of time)
+        #Check if using linear regression would work better than PLS
+        #Everything also runs to 0 for some reason so check for that as well
+
 def pls_regression(x_axis, y_axis):
-  x_train, x_test, y_train, y_test = train_test_split(x_axis, y_axis, test_size = 0.2, random_state = 42)
-  pls_model = PLSRegression(n_components=2, scale=True)
+  x_train, x_test, y_train, y_test = train_test_split(x_axis, y_axis, test_size = 0.2, random_state=42)
+  pls_model = PLSRegression(n_components=1, scale=True)
   pls_model.fit(x_train, y_train)
   y_predicted = pls_model.predict(x_test)
-  mse = mean_squared_error(y_test, y_pred)
+  mse = mean_squared_error(y_test, y_predicted)
   coefficients = pls_model.coef_
-  r2 = r2_score(y_test, y_pred)
-
+  r2 = r2_score(y_test, y_predicted)
+  return (mse, coefficients, r2)
 
 #main() sets up directory to point to
 def main():
@@ -64,13 +72,27 @@ def main():
   if len(gemaps_tables) == 0:
     raise RuntimeError(f"no GEMAPS tables found in directory '{args.gemaps_tables}'")
   if os.path.exists(f"{args.au_tables}/summaries.csv"):
-    combine_tables(gemaps_tables, args.gemaps_tables, f"{args.au_tables}/summaries.csv", args.output_path)
+    dataset = combine_tables(gemaps_tables, args.gemaps_tables, f"{args.au_tables}/summaries.csv", args.output_path)
   else:
     raise RuntimeError(f"AU summary table doesn't exist at '{args.au_tables}/summaries.csv'")
-
+    
+  au_cols = [x for x in dataset.columns if "AU" in x]
+  au_results = {}
   #Run PLS regression on a specifed column/acoustic cue
-  pls_regression()
-  
+  for au in tqdm(au_cols, desc = "Running PLS regression: ", total = len(au_cols)):
+    regression_model_results = pls_regression(dataset[MEASURED_METRIC].to_frame(MEASURED_METRIC), dataset[au].to_frame(au))
+    au_results[au.split("_")[0]] = {
+        "MSE": regression_model_results[0],
+        "Coefficients": regression_model_results[1],
+        "R^2": regression_model_results[2]
+    }
+      
+  #Display results
+  print(f"{'AU':<6} {'MSE':<6} {'Coeffs':<20} {'R^2':<10}")
+  print('-'*42)
+  for col in au_results:
+       print(f"{col:<6} {au_results[col]['MSE']:<6.2f} {au_results[col]['MSE']:<6.2f} {au_results[col]['R^2']:<6.2f}")
+
 
 if __name__ == "__main__":
   main()
