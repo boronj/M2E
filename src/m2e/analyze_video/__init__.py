@@ -11,17 +11,23 @@ def find_videos(path: Path):
 
 def summarize_video(per_frame_df):
 	'''
-	Returns probabilities of emotions + the top emotion.
+	Returns probabilities of emotions + the top emotion, as well as average AU measurements.
 	per_frame_def: pd.DataFrame (has probabilities for top emotions)
 	'''
 	out = {"video": list(set(per_frame_df['input']))[0]}
 	emo_cols = ['anger', 'disgust', 'fear', 'happiness', 'sadness', 'surprise', 'neutral']
+	#Check if emotional columns are in the dataframe columns
 	if set(emo_cols).issubset(per_frame_df.columns):
-		emo_means = per_frame_df[emo_cols].mean(skipna=True)
+		#Average emotional columns and add to outputted series
+		emo_means = per_frame_df[emo_cols].mean(skipna=True) 
 		out.update({f"emo_{c}_mean": float(emo_means[c]) for c in emo_cols})
 		top = emo_means.idxmax()
 		out["top_emotion"] = top
 		out["top_emotion_mean_prob"] = float(emo_means[top])
+	#Find AU units and average them all out, then add them to output series
+	au_cols = [x for x in per_frame_df.columns if "AU" in x]
+	au_means = per_frame_df[au_cols].mean(skipna=True)
+	out.update({f"{c}_mean": float(au_means[c]) for c in au_cols})
 	return pd.Series(out)
 
 
